@@ -2,6 +2,7 @@
 cmake-build-debug/*
 output/*
 build/*
+interactive_visualization/*
 test0
 test1
 test2

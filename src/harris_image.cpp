@@ -113,9 +113,32 @@ Image structure_matrix(const Image& im2, float sigma)
   else im=rgb_to_grayscale(im2);
   
   Image S(im.w, im.h, 3);
-  // TODO: calculate structure matrix for im.
+
+  Image Gx = convolve_image(im, make_gx_filter(), false);
+  Image Gy = convolve_image(im, make_gy_filter(), false);
+
+  for(int c=0; c<S.c; c++){
+    for(int j=0; j<S.h; j++){
+      for(int i=0; i<S.w; i++){
+        float Gx_val = Gx(i,j,0);
+        float Gy_val = Gy(i,j,0);
+        switch (c){
+          case 0:
+          S.set_pixel(i,j,c,Gx_val*Gx_val);
+          break;
+          case 1:
+          S.set_pixel(i,j,c,Gy_val*Gy_val);
+          break;
+          case 2:
+          S.set_pixel(i,j,c,Gx_val*Gy_val);
+          break;
+        }
+      } 
+    }
+  }
   
-  NOT_IMPLEMENTED();
+  Image mask = make_gaussian_filter(sigma);
+  S = convolve_image(S, mask, true);
   
   return S;
   }
