@@ -68,15 +68,19 @@ Image mark_corners(const Image& im, const vector<Descriptor>& d)
 // returns: single row Image of the filter.
 Image make_1d_gaussian(float sigma)
   {
-  // TODO: make separable 1d Gaussian.
+  int size = ceil(sigma*6);
+  if (!(size % 2)) size ++;
+
+  Image kernel(size,1,1);
   
-  NOT_IMPLEMENTED();
+  for(int i=0; i<kernel.w; i++){
+    int rx = i - (size/2);
+    float val = (1/(sqrt(2*M_PI)*sigma)) * expf(-(rx*rx)/(2*sigma*sigma));
+    kernel.set_pixel(i,0,0,val);
+  }
   
-  Image lin(1,1); // set to proper dimension
-  lin.data[0]=1;
   
-  
-  return lin;
+  return kernel;
   }
 
 // HW5 1.1b
@@ -90,9 +94,12 @@ Image smooth_image(const Image& im, float sigma)
   // Hint: to make the filter from vertical to horizontal or vice versa
   // use "swap(filter.h,filter.w)"
   
-  NOT_IMPLEMENTED();
-  
-  return im;
+  Image mask = make_1d_gaussian(sigma);
+  Image conv = convolve_image(im, mask, true);
+  swap(mask.h, mask.w);
+  conv = convolve_image(conv, mask, true);
+
+  return conv;
   }
 
 
@@ -137,8 +144,9 @@ Image structure_matrix(const Image& im2, float sigma)
     }
   }
   
-  Image mask = make_gaussian_filter(sigma);
-  S = convolve_image(S, mask, true);
+  /*Image mask = make_gaussian_filter(sigma);
+  S = convolve_image(S, mask, true);*/
+  S = smooth_image(S,sigma);
   
   return S;
   }
