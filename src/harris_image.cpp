@@ -225,7 +225,20 @@ Image nms_image(const Image& im, int w)
   //         if neighbor response greater than pixel response:
   //             set response to be very low
   
-  NOT_IMPLEMENTED();
+  for(int j=0; j<im.h; j++){
+    for(int i=0; i<im.w; i++){
+      float val = im(i,j,0);
+      for(int y=j-w; y<=j+w; y++){
+        for(int x=i-w; x<=i+w; x++){
+          if(val<im.clamped_pixel(x,y,0)){
+            r.set_pixel(i,j,0,-1000);
+            goto next;
+          }
+        }
+      }
+      next: ;
+    }
+  }
   
   return r;
   }
