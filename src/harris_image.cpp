@@ -255,9 +255,14 @@ vector<Descriptor> detect_corners(const Image& im, const Image& nms, float thres
   vector<Descriptor> d;
   //TODO: count number of responses over threshold (corners)
   //TODO: and fill in vector<Descriptor> with descriptors of corners, use describe_index.
-  
-  NOT_IMPLEMENTED();
-  
+  for(int j=0; j<im.h; j++){
+    for(int i=0; i<im.w; i++){
+      if(nms(i,j,0)>thresh){
+        d.push_back(describe_index(im,i,j,window));
+      }
+    }
+  }
+
   return d;
   }
 
