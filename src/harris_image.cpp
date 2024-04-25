@@ -163,7 +163,48 @@ Image cornerness_response(const Image& S, int method)
   // We'll use formulation det(S) - alpha * trace(S)^2, alpha = .06.
   // E(S) = det(S) / trace(S)
   
-  NOT_IMPLEMENTED();
+  //det(S)=A*B-C*C 
+  //trace(S)=(A*B)^2
+
+  switch(method){
+    case 0:
+    for(int j=0; j<S.h; j++){
+      for(int i=0; i<S.w; i++){
+        float A = S(i,j,0);
+        float B = S(i,j,1);
+        float C = S(i,j,2);
+        float det = (A*B)-(C*C);
+        float trace = A+B;
+        R.set_pixel(i,j,0,det/trace);
+      }
+    }
+    break;
+    
+    case 1:
+    for(int j=0; j<S.h; j++){
+      for(int i=0; i<S.w; i++){
+        float A = S(i,j,0);
+        float B = S(i,j,1);
+        float C = S(i,j,2);
+        float eig_min = (A+C-sqrt(pow(A-C, 2)+(4*B*B)))/2;
+        R.set_pixel(i,j,0,eig_min);
+      }
+    }
+    break;
+
+    case 2:
+    for(int j=0; j<S.h; j++){
+      for(int i=0; i<S.w; i++){
+        float A = S(i,j,0);
+        float B = S(i,j,1);
+        float C = S(i,j,2);
+        float det = (A*B)-(C*C);
+        float trace = A+B;
+        R.set_pixel(i,j,0,det-(trace*trace));
+      }
+    }
+    break;
+  }
   
   return R;
   }
