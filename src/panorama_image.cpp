@@ -228,7 +228,9 @@ vector<Match> model_inliers(const Matrix& H, const vector<Match>& m, float thres
   // TODO: fill inliers
   // i.e. distance(H*a.p, b.p) < thresh
   
-  NOT_IMPLEMENTED();
+  for(int i=0; i<m.size(); i++){
+    if(point_distance(project_point(H,m[i].a->p),m[i].b->p)<thresh) inliers.emplace_back(m[i]);
+  }
   
   return inliers;
   }
