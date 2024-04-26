@@ -176,8 +176,14 @@ vector<Match> match_descriptors(const vector<Descriptor>& a, const vector<Descri
   // TODO: use match_descriptors_a2b(a,b) and match_descriptors_a2b(b,a)
   // and populate `m` with good matches!
   
-  NOT_IMPLEMENTED();
-  
+  vector<int> match_a2b = match_descriptors_a2b(a,b);
+  vector<int> match_b2a = match_descriptors_a2b(b,a);
+
+  for(int i=0; i<match_a2b.size(); i++){
+    int ind = match_a2b[i];
+    if(match_a2b[i]!=-1 && i==match_b2a[ind]) m.emplace_back(Match(&a[i],&b[ind],l1_distance(a[i].data, b[ind].data)));
+  }
+
   return m;
   }
 
