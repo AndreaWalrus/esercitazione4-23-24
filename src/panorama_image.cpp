@@ -124,11 +124,12 @@ float l1_distance(const vector<float>& a,const vector<float>& b)
   {
   assert(a.size()==b.size() && "Arrays must have same size\n");
   
-  // TODO: return the correct number.
+  float sum=0;
+  for(int i=0; i<a.size(); i++){
+    sum+=abs(b[i]-a[i]);
+  }
   
-  NOT_IMPLEMENTED();
-  
-  return 0;
+  return sum;
   }
 
 // HW5 2.2a
