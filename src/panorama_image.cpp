@@ -440,8 +440,7 @@ Image combine_images(const Image& a, const Image& b, const Matrix& Hba, float ab
     for(int j = 0; j < a.h; ++j)
       for(int i = 0; i < a.w; ++i)
         {
-        // TODO: fill in.
-        NOT_IMPLEMENTED();
+        c.set_pixel(i-dx,j-dy,k,a.clamped_pixel(i,j,k));
         }
   
   // TODO: Blend in image b as well.
@@ -457,8 +456,18 @@ Image combine_images(const Image& a, const Image& b, const Matrix& Hba, float ab
   // The member 
   
   // TODO: Put your code here.
-  
-  NOT_IMPLEMENTED();
+  Point offset;
+  for(int k = 0; k < c.c; ++k)
+    for(int j = 0; j < c.h; ++j)
+      for(int i = 0; i < c.w; ++i)
+        {
+          offset.x = i+dx;
+          offset.y = j+dy;
+          Point point = project_point(Hba, offset);
+          if(point.x>=0 && point.x<=b.w && point.y>=0 && point.y<=b.h){
+            c.set_pixel(i,j,k,b.pixel_bilinear(point.x, point.y, k));
+          }
+        }
   
   
   // We trim the image so there are as few as possible black pixels.
