@@ -229,7 +229,7 @@ vector<Match> model_inliers(const Matrix& H, const vector<Match>& m, float thres
   // i.e. distance(H*a.p, b.p) < thresh
   
   for(int i=0; i<m.size(); i++){
-    if(point_distance(project_point(H,m[i].a->p),m[i].b->p)<thresh) inliers.emplace_back(m[i]);
+    if(point_distance(project_point(H,m[i].a->p),m[i].b->p)<thresh) inliers.push_back(m[i]);
   }
   
   return inliers;
@@ -244,7 +244,11 @@ void randomize_matches(vector<Match>& m)
   // You might want to use the swap function like:
   // swap(m[0],m[1]) which swaps the first and second element
   
-  NOT_IMPLEMENTED();
+  for(int i=m.size()-1; i>0; i--){
+    int j = rand() % (i+1);
+    swap(m[j],m[i]);
+  }
+
   }
 
 // HW5 3.4
