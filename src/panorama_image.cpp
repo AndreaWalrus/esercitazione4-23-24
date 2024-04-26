@@ -212,9 +212,7 @@ Point project_point(const Matrix& H, const Point& p)
 // returns: L2 distance between them.
 double point_distance(const Point& p, const Point& q)
   {
-  // TODO: should be a quick one.
-  NOT_IMPLEMENTED();
-  return 0;
+  return sqrt(pow(p.x-q.x, 2)+pow(p.y-q.y, 2));
   }
 
 // HW5 3.2b
