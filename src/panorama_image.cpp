@@ -147,7 +147,15 @@ vector<int> match_descriptors_a2b(const vector<Descriptor>& a, const vector<Desc
     // TODO: find the best 'bind' descriptor in b that best matches a[j]
     // TODO: put your code here:
     
-    NOT_IMPLEMENTED();
+    for(int i=0; i<b.size(); i++){
+      float dist = l1_distance(a[j].data,b[i].data);
+      if(dist<best_distance){
+        best_distance=dist;
+        bind=i;
+      }
+
+    }
+    ind.emplace_back(bind);
     }
   return ind;
   
