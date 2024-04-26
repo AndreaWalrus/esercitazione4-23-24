@@ -344,7 +344,25 @@ Matrix RANSAC(vector<Match> m, float thresh, int k, int cutoff)
   //             return it immediately
   // if we get to the end return the best homography
   
-  NOT_IMPLEMENTED();
+  for(int i=0; i<k; i++){
+    randomize_matches(m);
+    vector<Match> sample;
+    for(int j=0; j<4; j++){
+      sample.push_back(m[j]);
+    }
+    Matrix Hba_temp = compute_homography_ba(sample);
+    vector<Match> inliers = model_inliers(Hba_temp, m, thresh);
+    if(inliers.size()>best){
+      for(int z=0; z<sample.size(); z++){
+        inliers.push_back(sample[z]);
+      }
+      Hba_temp = compute_homography_ba(inliers);
+      Hba = Hba_temp;
+      best=inliers.size();
+
+      if(best>cutoff) break;
+    }
+  }
   
   return Hba;
   }
