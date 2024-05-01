@@ -465,7 +465,11 @@ Image combine_images(const Image& a, const Image& b, const Matrix& Hba, float ab
           offset.y = j+dy;
           Point point = project_point(Hba, offset);
           if(point.x>=0 && point.x<=b.w && point.y>=0 && point.y<=b.h){
-            c.set_pixel(i,j,k,b.pixel_bilinear(point.x, point.y, k));
+            if(c(i,j,k)==0.0){
+              c.set_pixel(i,j,k,b.pixel_bilinear(point.x, point.y, k));
+            }else{
+              c.set_pixel(i,j,k,(c(i,j,k)*ablendcoeff)+(b.pixel_bilinear(point.x, point.y, k)*(1-ablendcoeff)));
+            }
           }
         }
   
